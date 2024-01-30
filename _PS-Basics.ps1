@@ -3,10 +3,17 @@
 # Komplette Historie:
 (Get-PSReadLineOption).HistorySavePath
 
+# Fehler bei langen Pfaden aushebeln:
+"\\?\$Path\File.txt"
+
+# Wert einer Variablen einsetzen
+$ExecutionContext.InvokeCommand.ExpandString($_body)
+
 $key = [Console]::ReadKey($true)
 $value = $key.KeyChar
 
 [string]$Domain = (Get-CimInstance win32_computersystem).Domain
+$computersystem = Get-CimInstance win32_computersystem
 
 # Execution Policy
 Get-ExecutionPolicy -List
