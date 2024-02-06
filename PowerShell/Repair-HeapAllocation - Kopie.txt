@@ -1,0 +1,118 @@
+function Repair-HeapAllocation {
+    <#
+    .SYNOPSIS
+        This script detects the current values of the heap allocation and changes them so that this will not happen again soon.
+        Returncode: 0 = 'SharedSection-Value and SessionView-Value changed, restart the Server to take effect.'
+        Returncode: 1 = 'An Error occured, please check the values manually.'
+        Returncode: 2 = 'Heap Allocation already fixed on $LastLog. Please restart the Server to take effect.'
+
+    .NOTES
+        Name: Repair-HeapAllocation
+        Author: Marvin Becker | KRIS085 | NMD-FS4.1 | Marvin.Becker@bertelsmann.de
+        Date Created: 21.11.2022
+        Last Update: 16.03.2023
+
+    .EXAMPLE
+        Repair-HeapAllocation [-Verbose]
+    #>
+
+    [CmdletBinding()]
+    [OutputType([PSCustomObject])]
+    Param()
+
+    BEGIN {
+        $Result = @()
+        $Log = (Get-EventLog -LogName System -After ((Get-Date).adddays(-30)) -InstanceId 244 -ErrorAction SilentlyContinue).TimeGenerated 
+        $LastLog = $Log[0]
+        $LastBoot = (Get-CimInstance -ClassName win32_operatingsystem).lastbootuptime
+    }
+
+    PROCESS {
+        if ($LastLog -gt $LastBoot) {
+            Write-Verbose "Heap Allocation already fixed on $LastLog. Please restart the Server to take effect."
+            $Result = [PSCustomObject]@{
+                'SharedSection' = $SharedSectionValue
+                'SessioView'    = $SessionView
+                'Returncode'    = 2
+                'Message'       = "Heap Allocation already fixed on $LastLog. Please restart the Server to take effect."
+            }
+        } else {
+            $SharedSectionPath = 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\SubSystems'
+            $SessionViewPath = 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management'
+            # Read the Values
+            $SharedSection = Get-ItemPropertyValue -Path $SharedSectionPath -Name 'Windows'
+            $SessionView = Get-ItemPropertyValue -Path $SessionViewPath -Name 'SessionViewSize'
+            [int32]$SharedSectionValue = ($SharedSection.split(" ")[2]).split(",")[2]
+            # Changing the values
+            Write-Verbose "Old SharedSection: $SharedSectionValue"
+            switch ($SharedSectionValue) {
+                { $PSItem -lt 2048 } { $SharedSectionValue = 2048 }
+                { $PSItem -ge 2048 -and $PSItem -le 7680 } { $SharedSectionValue += 512 }
+                { $PSItem -ge 7681 } { $SharedSectionValue = 8192 }
+                default { $SharedSectionValue = 2048 }
+            }
+
+            $String = '%SystemRoot%\system32\csrss.exe ObjectDirectory=\Windows SharedSection=1024,20480,'
+            $String += $SharedSectionValue
+            $String += ' Windows=On SubSystemType=Windows ServerDll=basesrv,1 ServerDll=winsrv:UserServerDllInitialization,3 '
+            $String += 'ServerDll=sxssrv,4 ProfileControl=Off MaxRequestThreads=16'
+
+            try {
+                Set-ItemProperty -Path $SharedSectionPath -Name 'Windows' -Value $String -ErrorAction Stop
+                Write-Verbose "New SharedSection: $SharedSectionValue"
+            } catch {
+                Write-Verbose 'Error while setting 'SharedSection''
+                $SharedSectionError = $true
+            }
+
+            Write-Verbose "Old SessionView: $SessionView"
+            if ($SessionView -lt 64) {
+                #$SessionView = $SessionView + 16
+                $SessionView = 64
+                try {
+                    Set-ItemProperty -Path $SessionViewPath -Name 'SessionViewSize' -Value $SessionView -ErrorAction Stop
+                    Write-Verbose "New SessionView: $SessionView"
+                } catch {
+                    Write-Verbose 'Error while setting 'SessionView''
+                    $SessionViewError = $true
+                }
+            }
+        }
+    }
+
+    END {
+        if ($SharedSectionError -or $SessionViewError) {
+            $Result = [PSCustomObject]@{
+                'SharedSection' = ''
+                'SessioView'    = ''
+                'Returncode'    = 1
+                'Message'       = 'An Error occured, please check the values manually.'
+            }
+            $Result = $Result | ConvertTo-Json
+            throw $Result
+        } else {
+            # Event Log
+            $Source = 'Heap Allocation'
+            $SourceExist = [System.Diagnostics.EventLog]::SourceExists($Source);
+            if (-not $SourceExist) {
+                New-EventLog -LogName System -Source $Source
+            }
+            $EventlogParams = @{
+                'LogName'   = 'System';
+                'Source'    = $Source;
+                'EventId'   = 244;
+                'EntryType' = 'Information';
+                'Message'   = "New SharedSection: $SharedSectionValue; New SessionView: $SessionView";
+            }
+            Write-EventLog @EventlogParams
+
+            $Result = [PSCustomObject]@{
+                'SharedSection' = $SharedSectionValue
+                'SessioView'    = $SessionView
+                'Returncode'    = 0
+                'Message'       = 'SharedSection-Value and SessionView-Value changed, restart the Server to take effect.'
+            }
+        }
+        return $Result | ConvertTo-Json
+    }
+}

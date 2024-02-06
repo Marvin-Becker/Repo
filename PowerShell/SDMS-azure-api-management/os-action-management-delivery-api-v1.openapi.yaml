@@ -1,0 +1,147 @@
+openapi: 3.0.1
+info:
+  title: Managed OS Action Management API (Delivery)
+  description: Delivery API for Managed OS Action Deployments (based on Windows PSU API Framework)
+  version: 1.0.0
+  contact:
+    name: Windows API Developer Team
+    email: frederik.schubert@bertelsmann.de
+servers:
+  - description: Test
+    url: https://api.sdms-dev.arvato-systems.de/managed-os/action/v1
+  - description: Production
+    url: https://api.sdms.arvato-systems.de/managed-os/action/v1
+tags:
+  - name: action-deployment
+    description: All operations for deploying an action
+  - name: jobs
+    description: All operations for polling jobs status
+paths:
+  /tanium/newactiondeployment:
+    post:
+      tags:
+        - action-deployment
+      summary: Execute Tanium Action Deployment
+      operationId: executeTaniumActionDeployment
+      description: Executes a new Action Deployment in Tanium
+      requestBody:
+        description: New Action Deployment Object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewActionDeployment"
+      responses:
+        '200':
+          description: ok
+          headers:
+            Location:
+              schema:
+                type: string
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/AsyncJobId"
+        '201':
+          description: async job successfully prepared
+          headers:
+            Location:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AsyncJobId"
+  /job/{jobId}:
+    get:
+      tags:
+        - jobs
+      summary: Get Job Status
+      description: get status of asynchronous job
+      operationId: getWindowsAsyncJob
+      parameters:
+        - name: jobId
+          in: path
+          required: true
+          description: The id of the async job
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AsyncJobStatus"
+components:
+  schemas:
+    NewActionDeployment:
+      type: object
+      required:
+        - servername
+        - packagename
+      properties:
+        servername:
+          pattern: '^[a-zA-Z0-9\-]{1,15}$'
+          type: string
+          description: Name of Server
+          example: 'exlocwva00001'
+        packagename:
+          pattern: '(\[ASY*[a-zA-Z0-9-_ ().]{1,20}\][a-zA-Z0-9-_ ().\[\]]{1,50})'
+          type: string
+          description: Name of Tanium Package
+          example: '[ASY-EXAMPLE] Example Action'
+        dryrun:
+          type: boolean
+          default: true
+          example: true
+      example:
+        servername: 'exlocwva00001'
+        packagename: '[ASY-EXAMPLE] Example Action'
+        dryrun: false
+    AsyncJobId:
+      type: object
+      description: Status information of async job
+      properties:
+        jobId:
+          type: string
+          example: 637eb9ff-7c5e-cea4-d777-e7d51d6d5123
+    AsyncJobStatus:
+      type: object
+      description: Status information of async job
+      properties:
+        jobOutput:
+          type: object
+        jobError:
+          type: string
+        jobStatusName:
+          $ref: '#/components/schemas/State'
+        jobStatus:
+          type: integer
+          example: 1
+    State:
+      description: Available job states.
+      enum:
+        - Queued
+        - Running
+        - Canceled
+        - Completed
+        - Failed
+        - WaitingOnFeedback
+        - Canceling
+        - TimedOut
+        - Warning
+      title: State
+      type: string
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+    apiKeyQuery:
+      type: apiKey
+      name: subscription-key
+      in: query
+security:
+  - apiKeyHeader: [ ]
+  - apiKeyQuery: [ ]

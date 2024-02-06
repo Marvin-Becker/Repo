@@ -1,0 +1,268 @@
+openapi: 3.0.1
+info:
+  title: Managed OS DNS Management API (Internal)
+  description: Internal API for Managed OS DNS operations (based on Windows PSU API Framework)
+  version: 2.0.0
+  contact:
+    name: Windows API Developer Team
+    email: frederik.schubert@bertelsmann.de
+servers:
+  - url: https://api.sdms-dev.arvato-systems.de/managed-os/internal/dns-management/v2
+tags:
+  - name: forward-records
+    description: All operations for DNS forward records
+  - name: reverse-records
+    description: All operations for DNS reverse lookup records
+  - name: jobs
+    description: All operations for polling jobs status
+paths:
+  /records/forward:
+    post:
+      tags:
+        - forward-records
+      summary: Create Forward Record
+      description: This endpoint starts an asynchronous Job to create a forward DNS record in DomiNIC
+      operationId: DnsForward
+      requestBody:
+        description: DNS Forward Asynchronous Job Request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DnsForward'
+      responses:
+        "201":
+          description: async job successfully prepared
+          headers:
+            Location:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AsyncJobId"
+    delete:
+      tags:
+        - forward-records
+      summary: Delete Forward Record
+      description: This endpoint starts an asynchronous Job to delete a forward DNS record in DomiNIC
+      operationId: DnsForwardDelete
+      requestBody:
+        required: true
+        description: DNS Forward Asynchronous Job Request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DnsDelete'
+      responses:
+        "201":
+          description: async job successfully prepared
+          headers:
+            Location:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AsyncJobId"
+  /records/reverse:
+    post:
+      tags:
+        - reverse-records
+      description: This endpoint starts an asynchronous Job to create a reverse DNS record in domiNIC
+      summary: Create Reverse Record
+      operationId: DnsReverse
+      requestBody:
+        description: DNS Reverse Preparation Job Object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DnsReverse'
+      responses:
+        '201':
+          description: Job succesfully prepared
+          headers:
+            Location:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncJobId'
+    delete:
+      tags:
+        - reverse-records
+      summary: Delete Reverse Records
+      description: This endpoint starts an asynchronous Job to delete a reverse DNS record in domiNIC
+      operationId: DnsReverseDelete
+      requestBody:
+        required: true
+        description: DNS Delete Preparation Job Object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DnsDelete'
+      responses:
+        '201':
+          description: Job succesfully prepared
+          headers:
+            Location:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncJobId'
+  /job/{jobId}:
+    get:
+      tags:
+        - jobs
+      summary: Get Job Status
+      description: get status of asynchronous job
+      operationId: getWindowsAsyncJob
+      parameters:
+        - name: jobId
+          in: path
+          required: true
+          description: The id of the async job
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AsyncJobStatus"
+components:
+  schemas:
+    AsyncJobId:
+      type: object
+      description: Status information of async job
+      properties:
+        jobId:
+          type: string
+          example: 637eb9ff-7c5e-cea4-d777-e7d51d6d5123
+    DnsForward:
+      description: Forward Record Request Object
+      required:
+        - servername
+        - ipAddress
+      type: object
+      properties:
+        zoneName:
+          type: string
+          description: Name of the zone for the new DNS record. Default is server.arvato-systems.de. Validateset is 'server.arvato-systems.de'
+          example: server.arvato-systems.de
+          default: server.arvato-systems.de
+        servername:
+          type: string
+          description: Servername for the new DNS record. Validationpattern is ^[a-zA-Z0-9-]+$
+          pattern: ^[a-zA-Z0-9-]+$
+          example: gtlocwvc012345
+        timeToLive:
+          type: integer
+          description: ttl of dns entry
+          default: 86400
+          example: 3600
+        ipAddress:
+          type: string
+          description: ip of the host
+          format: ipv4
+          example: 10.10.10.10
+        dryRun:
+          type: boolean
+          example: true
+    DnsReverse:
+      description: Reverse Record Request Object
+      required:
+        - servername
+        - ipAddress
+      type: object
+      properties:
+        zoneName:
+          type: string
+          description: Name of the zone for the new DNS record. Default is server.arvato-systems.de. Validateset is 'server.arvato-systems.de'
+          example: server.arvato-systems.de
+          default: server.arvato-systems.de
+        servername:
+          type: string
+          description: Servername for the new DNS record. Validationpattern is ^[a-zA-Z0-9-]+$
+          pattern: ^[a-zA-Z0-9-]+$
+          example: gtlocwvc012345
+        timeToLive:
+          type: integer
+          description: ttl of dns entry
+          default: 86400
+          example: 3600
+        ipAddress:
+          type: string
+          description: ip of the host
+          format: ipv4
+          example: 10.10.10.10
+        dryRun:
+          type: boolean
+          example: true
+    DnsDelete:
+      required:
+        - servername
+        - ipAddress
+      type: object
+      properties:
+        zoneName:
+          type: string
+          description: name of the dns zone the records are located in
+          example: server.arvato-systems.de
+        servername:
+          type: string
+          description: Servername for the new DNS record. Validationpattern is ^[a-zA-Z0-9-]+$
+          pattern: ^[a-zA-Z0-9-]+$
+          example: gtlocwvc012345
+        ipAddress:
+          type: string
+          description: ip of the host
+          format: ipv4
+          example: 10.10.10.10
+        dryRun:
+          type: boolean
+          example: true
+    AsyncJobStatus:
+      type: object
+      description: Status information of async job
+      properties:
+        jobOutput:
+          type: object
+        jobError:
+          type: string
+        jobStatusName:
+          $ref: '#/components/schemas/State'
+        jobStatus:
+          type: integer
+          example: 1
+    State:
+      description: Available job states.
+      enum:
+        - Queued
+        - Running
+        - Canceled
+        - Completed
+        - Failed
+        - WaitingOnFeedback
+        - Canceling
+        - TimedOut
+        - Warning
+      title: State
+      type: string
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+    apiKeyQuery:
+      type: apiKey
+      name: subscription-key
+      in: query
+security:
+  - apiKeyHeader: [ ]
+  - apiKeyQuery: [ ]

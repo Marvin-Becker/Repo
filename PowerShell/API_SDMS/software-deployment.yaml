@@ -1,0 +1,72 @@
+paths:
+  /software-deployment:
+    post:
+      tags:
+        - software-deployment
+      summary: Execute Tanium Software Deployment
+      operationId: SoftwareDeployment
+      description: Executes a Software Install Deployment
+      requestBody:
+        description: New Software Install Deployment Object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SoftwareDeployment"
+      responses:
+        '200':
+          description: ok
+          headers:
+            Location:
+              schema:
+                type: string
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/AsyncJobId"
+        '201':
+          description: async job successfully prepared
+          headers:
+            Location:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AsyncJobId"
+    delete:
+      tags:
+        - software-deployment
+      summary: Execute Tanium Software Deployment
+      operationId: SoftwareDeployment
+      description: Executes a Software Removal Deployment
+      requestBody:
+        description: New Software Removal Deployment Object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SoftwareDeployment"
+      responses:
+        '200':
+          description: ok
+          headers:
+            Location:
+              schema:
+                type: string
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/AsyncJobId"
+        '201':
+          description: async job successfully prepared
+          headers:
+            Location:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AsyncJobId"
+
+

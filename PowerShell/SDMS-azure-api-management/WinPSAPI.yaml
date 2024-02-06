@@ -1,0 +1,112 @@
+openapi: 3.0.1
+info:
+  title: Windows Powershell API
+  description: This API is only a proxy API that routes all requests to the windows powershell backend.
+  version: v1
+servers:
+  - description: Test
+    url: https://api.sdms-dev.arvato-systems.de/windows/v1
+  - description: Production
+    url: https://api.sdms.arvato-systems.de/windows/v1
+paths:
+  /*:
+    post:
+      summary: execute windows async job
+      operationId: executePostWindowsAsyncJob
+      tags:
+        - Powershell Script
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/AsyncJobId"
+    get:
+      summary: execute windows synchronous job
+      operationId: executeWindowsSynchronousJob
+      tags:
+        - Powershell Script
+      responses:
+        '200':
+          description: ok
+    put:
+      summary: execute windows async job
+      operationId: executePutWindowsAsyncJob
+      tags:
+        - Powershell Script
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/AsyncJobId"
+    delete:
+      summary: execute windows async job
+      operationId: executeDeleteWindowsAsyncJob
+      tags:
+        - Powershell Script
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/AsyncJobId"
+  /job/{jobId}:
+    get:
+      summary: get status of asynchronous job
+      operationId: getWindowsAsyncJob
+      tags:
+        - Powershell Script
+      parameters:
+        - name: jobId
+          in: path
+          required: true
+          description: The id of the async job
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AsyncJobStatus"
+components:
+  schemas:
+    AsyncJobStatus:
+      type: object
+      description: Status information of async job
+      properties:
+        jobOutput:
+          type: object
+        jobError:
+          type: string
+        jobStatusName:
+          $ref: '#/components/schemas/State'
+        jobStatus:
+          type: integer
+          example: 1
+    State:
+      description: Available job states.
+      enum:
+        - Queued
+        - Running
+        - Canceled
+        - Completed
+        - Failed
+        - WaitingOnFeedback
+        - Canceling
+        - TimedOut
+        - Warning
+      title: State
+      type: string
+    AsyncJobId:
+      type: object
+      description: Status information of async job
+      properties:
+        jobId:
+          type: string
+          example: 637eb9ff-7c5e-cea4-d777-e7d51d6d5123

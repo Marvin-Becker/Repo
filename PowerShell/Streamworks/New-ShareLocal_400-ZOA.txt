@@ -1,0 +1,105 @@
+<#
+.Synopsis
+    Create the Share in ZOA-T-WN-SHARE-CREATE
+.DESCRIPTION
+   This Script runs in the Streamworksenviroment and
+   is triggered by SDMS. Not for interactive use.
+   Create the Share with Grouprights for Domain.
+   Runs with Local Rights.
+.NOTES
+    Name: New-ShareLocal
+    Author: Marvin Becker | KRIS085 | NMD-FS4.1 | Marvin.Becker@bertelsmann.de
+    Date Created: 12.05.2023
+    Last Update: 29.06.2023
+#>
+
+# SW-Vars
+$ShareHost = "?{ServerName}"
+$ShareDevice = "?{ShareDevice}"
+$ShareName = "?{ShareName}"
+$Description = "?{$ST_STREAM}"
+
+[string]$Info = ''
+$RC = 0
+[string]$ErrorMessage = ''
+[string]$AD_Groups = $ShareHost + '_FS_' + $ShareName
+$Path = $ShareDevice + ':\' + $ShareName
+
+if ( $ShareDevice -like 'C' ) {
+    $ErrorMessage += 'Error: Drive C is not allowed here. '
+    $RC = 1
+    Write-Output "Info=$Info"
+    Write-Output "RC=$RC"
+    Write-Output "Error=$ErrorMessage"
+    Exit
+}
+
+function Write-Log {
+    param (
+        [string]$Message
+    )
+    $Appsource = 'SMBShare'
+    $AppSourceExist = [System.Diagnostics.EventLog]::SourceExists($AppSource);
+    if (-not $AppSourceExist) {
+        New-EventLog -LogName Application -Source $Appsource
+    }
+    $Messageparms = @{
+        LogName     = 'Application'
+        Source      = $Appsource
+        EventId     = '54001'
+        EntryType   = 'Information'
+        Message     = 'New-Share (local) - Result: ' + $Message
+        ErrorAction = 'SilentlyContinue'
+    }
+    Write-EventLog @Messageparms
+}
+
+# create folder
+if ( Test-Path $Path ) {
+    $Info += 'Directory ' + $Path + ' already exists! '
+} else {
+    try {
+        New-Item -Path $ShareDevice':\'$ShareName -ItemType Directory -ErrorAction Stop | Out-Null
+        $Info += 'New Directory created: ' + $Path + '. '
+    } catch {
+        $ErrorMessage += 'Error: Could not create Directory ' + $Path + '. '
+        $RC = 1
+    }
+}
+
+# create share
+$ShareParams = @{
+    Name         = $ShareName
+    Path         = $Path
+    FullAccess   = $AD_Groups + '_FA_DL'
+    ChangeAccess = $AD_Groups + '_RW_DL'
+    ReadAccess   = $AD_Groups + '_LF_DL'
+    Description  = $Description
+}
+
+if ( Get-SmbShare | Where-Object Path -EQ $Path ) {
+    $Info += 'Share for ' + $Path + ' already exists! '
+} else {
+    try {
+        New-SmbShare @ShareParams -AsJob -ErrorAction Stop | Out-Null
+        $Info += 'New Share created: ' + $Path + '. '
+    } catch {
+        $ErrorMessage += 'Error: Could not create Share ' + $Path + '. '
+        $RC = 1
+    }
+}
+
+try {
+    Grant-SmbShareAccess -Name $ShareName -AccountName $ShareParams.FullAccess -AccessRight Full -Force -ErrorVariable AccessError -ErrorAction Stop | Out-Null
+    Grant-SmbShareAccess -Name $ShareName -AccountName $ShareParams.ChangeAccess -AccessRight Change -Force -ErrorVariable AccessError -ErrorAction Stop | Out-Null
+    Grant-SmbShareAccess -Name $ShareName -AccountName $ShareParams.ReadAccess -AccessRight Read -Force -ErrorVariable AccessError -ErrorAction Stop | Out-Null
+    $Info += 'Granted Share Access for the AD-Groups.'
+} catch {
+    $ErrorMessage += 'Error: Could not grant Share-Access for ' + $Path + '. ' + $AccessError
+    $RC = 1
+}
+
+Write-Log -Message $Info
+Write-Output "Info=$Info"
+Write-Output "RC=$RC"
+Write-Output "Error=$ErrorMessage"
