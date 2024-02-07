@@ -3,12 +3,12 @@
 This script created domain local and global permission groups.
 
 .DESCRIPTION
-All computer objects in a managed Arvato Systems OU are collected and for each one RDP and local admin permission groups are created.
+All computer objects in a managed  OU are collected and for each one RDP and local admin permission groups are created.
 #>
 
 <#
 Author
-Sebastian Moock | NMD-I2.1 | sebastian.moock@bertelsmann.de
+Marvin Becker | NMD-I2.1 | Marvin.Becker@outlook.de
 #>
 
 
@@ -49,46 +49,46 @@ $DomainLocalRDPInfo = 'Darf nur von ASYS Windows Server Team bearbeitet werden !
 foreach ($Object in $Servers) {
     # Splatting in order to shorten New-ADGroup.
     $GlobalAdminParameter = @{
-        Name = $Object.Name + "_USR_LocalAdmin"
-        SamAccountName = $Object.Name + "_USR_LocalAdmin"
-        GroupCategory = 'Security'
-        GroupScope = 'Global'
-        DisplayName = $Object.Name + "_USR_LocalAdmin"
-        Path = $GlobalGroupOUPath
-        Description = "User m. lokal Admin Rechte f. " + $Object.Name
+        Name            = $Object.Name + "_USR_LocalAdmin"
+        SamAccountName  = $Object.Name + "_USR_LocalAdmin"
+        GroupCategory   = 'Security'
+        GroupScope      = 'Global'
+        DisplayName     = $Object.Name + "_USR_LocalAdmin"
+        Path            = $GlobalGroupOUPath
+        Description     = "User m. lokal Admin Rechte f. " + $Object.Name
         OtherAttributes = @{ info = $GlobalGroupAdminInfo }
     }
 
     $DomainLocalAdminParameter = @{
-        Name = $Object.Name + "_LocalAdmin"
-        SamAccountName = $Object.Name + "_LocalAdmin"
-        GroupCategory = 'Security'
-        GroupScope = 'DomainLocal'
-        DisplayName = $Object.Name + "_LocalAdmin"
-        Path = $LocalGroupOUPath
-        Description = "Local Admin Zugriff f. " + $Object.Name
+        Name            = $Object.Name + "_LocalAdmin"
+        SamAccountName  = $Object.Name + "_LocalAdmin"
+        GroupCategory   = 'Security'
+        GroupScope      = 'DomainLocal'
+        DisplayName     = $Object.Name + "_LocalAdmin"
+        Path            = $LocalGroupOUPath
+        Description     = "Local Admin Zugriff f. " + $Object.Name
         OtherAttributes = @{ info = $DomainLocalAdminInfo }
     }
 
     $GlobalRDPParameter = @{
-        Name = $Object.Name + "_USR_RDP"
-        SamAccountName = $Object.Name + "_USR_RDP"
-        GroupCategory = 'Security'
-        GroupScope = 'Global'
-        DisplayName = $Object.Name + "_USR_RDP"
-        Path = $GlobalGroupOUPath
-        Description = "User m. RDP Rechte f. " + $Object.Name
+        Name            = $Object.Name + "_USR_RDP"
+        SamAccountName  = $Object.Name + "_USR_RDP"
+        GroupCategory   = 'Security'
+        GroupScope      = 'Global'
+        DisplayName     = $Object.Name + "_USR_RDP"
+        Path            = $GlobalGroupOUPath
+        Description     = "User m. RDP Rechte f. " + $Object.Name
         OtherAttributes = @{ info = $GlobalGroupRDPInfo }
     }
 
     $DomainLocalRDPParameter = @{
-        Name = $Object.Name + "_RDP"
-        SamAccountName = $Object.Name + "_RDP"
-        GroupCategory = 'Security'
-        GroupScope = 'DomainLocal'
-        DisplayName = $Object.Name + "_RDP"
-        Path = $LocalGroupOUPath
-        Description = "RDP Zugriff f. " + $Object.Name
+        Name            = $Object.Name + "_RDP"
+        SamAccountName  = $Object.Name + "_RDP"
+        GroupCategory   = 'Security'
+        GroupScope      = 'DomainLocal'
+        DisplayName     = $Object.Name + "_RDP"
+        Path            = $LocalGroupOUPath
+        Description     = "RDP Zugriff f. " + $Object.Name
         OtherAttributes = @{ info = $DomainLocalRDPInfo }
     }
 

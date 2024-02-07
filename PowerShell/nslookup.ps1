@@ -1,5 +1,5 @@
 [array]$computer = @("degtlun5833","csgpnek1")
-[array]$domain = @("server.arvato-systems.de")
+[array]$domain = @("server.server.de")
 
 foreach ($server in $computer){
     if($PSBoundParameters.ContainsKey('domain')){

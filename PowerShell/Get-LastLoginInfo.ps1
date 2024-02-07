@@ -7,7 +7,7 @@ Function Get-LastLoginInfo {
 
     .NOTES
         Name: Get-LastLoginInfo
-        Author: sven.flock@bertelsmann.de
+        Author: Marvin.Becker@outlook.de
         Version: 1.1
         DateCreated: 2020-Nov-27
         DateUpdated: 2022-Sep-23

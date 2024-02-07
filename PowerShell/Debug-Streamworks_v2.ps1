@@ -8,7 +8,7 @@ Checks the status of the service, the streamworks.conf, Windows firewall and cru
 
 <#
 Author
-Sebastian Moock | NMD-I2.1 | sebastian.moock@bertelsmann.de
+Marvin Becker | NMD-I2.1 | Marvin.Becker@outlook.de
 #>
 
 

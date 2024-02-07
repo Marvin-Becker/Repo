@@ -1,1 +1,1 @@
-runas /env /user:asysservice\admkris085 "rundll32 printui.dll,PrintUIEntry /il"
+runas /env /user:asysservice\admin "rundll32 printui.dll,PrintUIEntry /il"

@@ -5,7 +5,7 @@ Function Get-Something {
 
     .NOTES
         Name: 
-        Author: Marvin Becker | KRIS085 | NMD-FS4.1 | Marvin.Becker@bertelsmann.de
+        Author: Marvin Becker  | Marvin.Becker@outlook.de
         Date Created: 
         Last Update:
 
@@ -13,7 +13,7 @@ Function Get-Something {
         Get-Something 'User1', 'User2' 'Server' 'ASYS-Order-0001217'
 
     .LINK
-        https://wiki.arvato-systems.de/
+        https://wiki.server.de/
     #>
 
     [CmdletBinding()]

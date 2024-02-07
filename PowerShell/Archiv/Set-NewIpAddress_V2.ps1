@@ -136,12 +136,12 @@ Param(
     }
     Start-Sleep -s 3
     if(($D_Err -ne $true) -AND ($B_Err -ne $true)){
-        $IPConfig = "C:\SZIR\ipconfigall.txt"
+        $IPConfig = "C:\temp\ipconfigall.txt"
         if(Test-Path $IPConfig){
             $DateStamp = Get-Date -uformat "%Y-%m-%d@%H-%M-%S"
             $NewName = "ipconfigall_saved_$DateStamp.txt"
             Rename-Item $IPConfig -NewName $NewName
-            $Result += "Old IPConfig saved in C:\SZIR\$NewName"
+            $Result += "Old IPConfig saved in C:\temp\$NewName"
         }
         ipconfig /all >> $IPConfig
     }

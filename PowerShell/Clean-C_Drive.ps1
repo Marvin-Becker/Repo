@@ -98,17 +98,17 @@ Write-EventLog -LogName Application -Source $Source -EventId 123 -EntryType Info
 
 ### Open TreeSize
 function Open-TreeSize {
-    [string[]]$TreeSize = (Get-ChildItem -Path "C:\SZIR" -Recurse | Where-Object { ($_.Name -like "TreeSizeFree.exe") -OR ($_.Name -like "TreeSize.exe") }).Fullname
+    [string[]]$TreeSize = (Get-ChildItem -Path "C:\temp" -Recurse | Where-Object { ($_.Name -like "TreeSizeFree.exe") -OR ($_.Name -like "TreeSize.exe") }).Fullname
 
     if ($TreeSize) {
         Write-Output "Starting TreeSize..."
         Start-Process $TreeSize[0]
     } else {
         Write-Output "No TreeSize found. Will copy it from your System..."
-        Copy-Item "\\tsclient\Z\Install\Tools\TreeSizeFree.exe" -Destination "C:\SZIR\BIN\" -Force
-        if (Test-Path "C:\SZIR\BIN\TreeSizeFree.exe") {
+        Copy-Item "\\tsclient\Z\Install\Tools\TreeSizeFree.exe" -Destination "C:\temp\BIN\" -Force
+        if (Test-Path "C:\temp\BIN\TreeSizeFree.exe") {
             Write-Output "Starting TreeSize..."
-            Start-Process "C:\SZIR\BIN\TreeSizeFree.exe"
+            Start-Process "C:\temp\BIN\TreeSizeFree.exe"
         } else { Write-Output "Still no TreeSize found." }
     }
 }

@@ -7,8 +7,8 @@ Checks the crucial network connections.
 #>
 
 <#
-Author: Sebastian Moock | NMD-I2.1 | sebastian.moock@bertelsmann.de
-Last Update: 10.11.2022 - Marvin Krischker | KRIS085 | NMD-I2.1 | Marvin.Krischker@bertelsmann.de
+Author: Marvin Becker | NMD-I2.1 | Marvin.Becker@outlook.de
+Last Update: 10.11.2022 - Marvin Krischker  | Marvin.Krischker@outlook.de
 #>
 
 

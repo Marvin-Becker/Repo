@@ -8,7 +8,7 @@ function Repair-HeapAllocation {
 
     .NOTES
         Name: Repair-HeapAllocation
-        Author: Marvin Becker | KRIS085 | NMD-FS4.1 | Marvin.Becker@bertelsmann.de
+        Author: Marvin Becker  | Marvin.Becker@outlook.de
         Date Created: 21.11.2022
         Last Update: 17.08.2023
 
@@ -16,7 +16,7 @@ function Repair-HeapAllocation {
         Repair-HeapAllocation [-Verbose]
 
     .LINK
-        https://wiki.arvato-systems.de/pages/viewpage.action?pageId=63310513
+        https://wiki.server.de/pages/viewpage.action?pageId=63310513
     #>
 
     [CmdletBinding()]

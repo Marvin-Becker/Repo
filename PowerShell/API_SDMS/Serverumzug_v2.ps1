@@ -20,7 +20,7 @@ function MigrateServer {
         [parameter(Mandatory = $false)]
         [ValidatePattern('(?=^.{1,254}$)(^(?:(?!\d+\.|-)[a-zA-Z0-9_\-]{1,63}(?<!-)\.?)+(?:[a-zA-Z]{2,})\.?$)')]
         [string]
-        $ZoneName = 'server.arvato-systems.de',
+        $ZoneName = 'server.server.de',
         [parameter(Mandatory = $true)]
         [ValidatePattern('(20[0-9]{9}WEB|SD[0-9]{8}|IM[0-9]{9}|C[0-9]{10}|OMM_.+|ASYS-Order-[0-9]{7}|TESTING|MIGRATION)')]
         [string]
@@ -40,7 +40,7 @@ function MigrateServer {
         )
 
         do { 
-            $Status = (Invoke-WebRequest -Uri "https://api.windows.arvato-systems.de/job/$JobID" -UseBasicParsing -UseDefaultCredentials -Method "GET" -Verbose).content
+            $Status = (Invoke-WebRequest -Uri "https://api.windows.server.de/job/$JobID" -UseBasicParsing -UseDefaultCredentials -Method "GET" -Verbose).content
             sleep 5
         } until ( $Status.Contains("Completed") -OR $Status.Contains("Failed"))
         #$Status = '{ "jobOutput": {}, "jobError":"", "jobStatusName":"Failed", "jobStatus":3}'
@@ -72,7 +72,7 @@ function MigrateServer {
             'DNSreverse' { $Path = 'dns/v1/reverse' }
         }
 
-        $Job = (Invoke-WebRequest -Uri "https://api.windows.arvato-systems.de/$Path" -UseBasicParsing -UseDefaultCredentials `
+        $Job = (Invoke-WebRequest -Uri "https://api.windows.server.de/$Path" -UseBasicParsing -UseDefaultCredentials `
                 -Method $Method -Body $Body -ContentType "application/json").content
 
         if ($Job) {

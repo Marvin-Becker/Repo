@@ -5,7 +5,7 @@ function New-File() {
 
     .NOTES
         Name: New-File
-        Author: Marvin Krischker | KRIS085 | NMD-I2.1 | Marvin.Krischker@bertelsmann.de
+        Author: Marvin Krischker  | Marvin.Krischker@outlook.de
         Date Created: 14.06.2022
         Last Update:
 

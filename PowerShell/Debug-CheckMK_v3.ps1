@@ -7,8 +7,8 @@ Checks the crucial network connections.
 #>
 
 <#
-Author: Sebastian Moock | NMD-I2.1 | sebastian.moock@bertelsmann.de
-Last Update: 10.11.2022 - Marvin Krischker | KRIS085 | NMD-I2.1 | Marvin.Krischker@bertelsmann.de
+Author: Marvin Becker | NMD-I2.1 | Marvin.Becker@outlook.de
+Last Update: 10.11.2022 - Marvin Krischker  | Marvin.Krischker@outlook.de
 #>
 
 
@@ -36,7 +36,7 @@ $DIalogSubnetMask = $NICConfiguration.IPSubnet
 $DialogGateway = ((Get-NetIPConfiguration | Where-Object { $_.InterfaceAlias -eq 'Dialog' }).IPv4DefaultGateway).NextHop
 $DNSServers = (Get-CimInstance Win32_NetworkAdapterConfiguration | Where-Object { $_.InterfaceIndex -eq $NICConfiguration.InterfaceIndex }).DNSServerSearchOrder
 
-$CheckMkSiteServer = Get-ItemPropertyValue -Path 'HKLM:\SOFTWARE\Arvato\OSConfig\CheckMK' -Name 'CheckMkSiteServer'
+$CheckMkSiteServer = Get-ItemPropertyValue -Path 'HKLM:\SOFTWARE\OSConfig\CheckMK' -Name 'CheckMkSiteServer'
 
 switch -Wildcard ($CheckMkSiteServer) {
     '*gtloccmks*' {

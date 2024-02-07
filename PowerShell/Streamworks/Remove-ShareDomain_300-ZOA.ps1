@@ -8,7 +8,7 @@
    Runs with Domain Rights.
 .NOTES
     Name: Remove-ShareDomain
-    Author: Marvin Becker | KRIS085 | NMD-FS4.1 | Marvin.Becker@bertelsmann.de
+    Author: Marvin Becker  | Marvin.Becker@outlook.de
     Date Created: 12.05.2023
     Last Update: 01.06.2023
 #>

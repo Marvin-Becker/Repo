@@ -6,7 +6,7 @@ function Set-UserProfilePath{
           .DESCRIPTION
           Changes User Profile Path for all existing and new Users from one Drive to another.
           Copies all existing Profiles. Except majestics and User running the Script. (Because of open file restrictions)
-          Creates Backup of Registry Path before editing. (in C:\SZIR\BIN\)
+          Creates Backup of Registry Path before editing. (in C:\temp\BIN\)
           Changes the entries under ProfileList for ProfilesDirectory, Default, Public and all Users in the List. Skips majestics and User running the Script. (Because we didn't copy their folders)
           .EXAMPLE
           Set-UserProfilePath -OldDrive C: -NewDrive E:
@@ -28,7 +28,7 @@ function Set-UserProfilePath{
         )
     #Backup Reg Keys
     $strExportRegKey = "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList"
-    $strExportPath = "C:\SZIR\BIN"
+    $strExportPath = "C:\temp\BIN"
     if (-not (Test-Path -Path $strExportPath)){
         $strExportPath = $env:Temp
     }

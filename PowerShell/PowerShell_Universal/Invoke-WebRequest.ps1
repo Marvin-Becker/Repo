@@ -42,7 +42,7 @@ function New-WebRequest () {
 
         do {
             Start-Sleep 10
-            $Status = (Invoke-WebRequest -Uri "https://dev-api.windows.arvato-systems.de/job/$JobID" -UseBasicParsing -UseDefaultCredentials `
+            $Status = (Invoke-WebRequest -Uri "https://dev-api.windows.server.de/job/$JobID" -UseBasicParsing -UseDefaultCredentials `
                     -Method "GET" -Verbose).Content
         } while ( $Status.Contains('Running') )
         #$Status = '{ "jobOutput": {}, "jobError":"", "jobStatusName":"Failed", "jobStatus":3}'
@@ -108,7 +108,7 @@ function New-WebRequest () {
         $Body = @{
             'servername' = $Servername;
             'access'     = 'RDP';
-            'users'      = 'admkris085';
+            'users'      = 'admin';
             'domain'     = 'asysservice.de';
             'orderId'    = $OrderID;
             'dryRun'     = $DryRun
@@ -128,7 +128,7 @@ function New-WebRequest () {
     $Body = $Body | ConvertTo-Json
     $Body
     $Path
-    $Content = (Invoke-WebRequest -Uri "https://dev-api.windows.arvato-systems.de/$Path" -UseBasicParsing -UseDefaultCredentials `
+    $Content = (Invoke-WebRequest -Uri "https://dev-api.windows.server.de/$Path" -UseBasicParsing -UseDefaultCredentials `
             -Method $Method -Body $Body -ContentType "application/json").Content
     
     if ($Content) {
@@ -137,7 +137,7 @@ function New-WebRequest () {
     }
 }
 
-New-WebRequest -Servername "kris085" -Repo "DNSforward" -Method "POST" -DryRun $true
+New-WebRequest -Servername "marvin" -Repo "DNSforward" -Method "POST" -DryRun $true
 
 
 ####################################################
@@ -163,13 +163,13 @@ $Body = @{
 }
 $Body = $Body | ConvertTo-Json
 $Path = 'system-management/v1/servicestatus'
-$Content = (Invoke-WebRequest -Uri "https://dev-api.windows.arvato-systems.de/$Path" -UseBasicParsing -UseDefaultCredentials -Method 'POST' -Body $Body -ContentType "application/json").Content
+$Content = (Invoke-WebRequest -Uri "https://dev-api.windows.server.de/$Path" -UseBasicParsing -UseDefaultCredentials -Method 'POST' -Body $Body -ContentType "application/json").Content
 
 if ($Content) {
     do {
         Start-Sleep 10
         $JobID = $Content.Replace("{`"jobId`":`"", "").Replace("`"}", "")
-        $Job = (Invoke-WebRequest -UseDefaultCredentials -Method "GET" -Uri "https://dev-api.windows.arvato-systems.de/job/$JobID").Content
+        $Job = (Invoke-WebRequest -UseDefaultCredentials -Method "GET" -Uri "https://dev-api.windows.server.de/job/$JobID").Content
         $Job
     } while ( $Job.Contains('Running') )
 }
@@ -197,7 +197,7 @@ $Body = @{
 $Body = @{
     'servername' = 'testkrisvcd001';
     'access'     = 'RDP';
-    'users'      = 'admkris085';
+    'users'      = 'admin';
     'domain'     = 'asysservice.de';
     'orderId'    = 'ASYS-Order-0001217';
     'dryRun'     = $true
@@ -207,13 +207,13 @@ $Body = $Body | ConvertTo-Json
 #$Path = 'system-management/v1/share'
 $Path = 'system-management/v1/access'
 #$Path = '/access-management/v1/department'
-$Content = (Invoke-WebRequest -Uri "https://dev-api.windows.arvato-systems.de/$Path" -UseBasicParsing -UseDefaultCredentials -Method 'POST' -Body $Body -ContentType "application/json").Content
+$Content = (Invoke-WebRequest -Uri "https://dev-api.windows.server.de/$Path" -UseBasicParsing -UseDefaultCredentials -Method 'POST' -Body $Body -ContentType "application/json").Content
 
 if ($Content) {
     do {
         Start-Sleep 10
         $JobID = $Content.Replace("{`"jobId`":`"", "").Replace("`"}", "")
-        $Job = (Invoke-WebRequest -UseDefaultCredentials -Method "GET" -Uri "https://dev-api.windows.arvato-systems.de/job/$JobID").Content
+        $Job = (Invoke-WebRequest -UseDefaultCredentials -Method "GET" -Uri "https://dev-api.windows.server.de/job/$JobID").Content
         $Job
     } while ( $Job.Contains('Running') )
 }
@@ -231,9 +231,9 @@ $Body = @{
     'dryRun'         = $true
 }
 $Body = $Body | ConvertTo-Json
-$Job = Invoke-WebRequest -Uri "https://dev-api.windows.arvato-systems.de/disk-management/v1/disk" -UseBasicParsing -UseDefaultCredentials -Method "POST" -Body $Body -ContentType "application/json"
+$Job = Invoke-WebRequest -Uri "https://dev-api.windows.server.de/disk-management/v1/disk" -UseBasicParsing -UseDefaultCredentials -Method "POST" -Body $Body -ContentType "application/json"
 Start-Sleep 2
-(Invoke-WebRequest -UseDefaultCredentials -Method "GET" -Uri "https://dev-api.windows.arvato-systems.de/job/$(($Job.Content | ConvertFrom-Json).jobId)").Content
+(Invoke-WebRequest -UseDefaultCredentials -Method "GET" -Uri "https://dev-api.windows.server.de/job/$(($Job.Content | ConvertFrom-Json).jobId)").Content
 
 ### UPDATE
 $Body = @{
@@ -244,9 +244,9 @@ $Body = @{
     'dryRun'      = $true
 }
 $Body = $Body | ConvertTo-Json
-$Job = Invoke-WebRequest -Uri "https://dev-api.windows.arvato-systems.de/disk-management/v1/disk" -UseBasicParsing -UseDefaultCredentials -Method "PUT" -Body $Body -ContentType "application/json"
+$Job = Invoke-WebRequest -Uri "https://dev-api.windows.server.de/disk-management/v1/disk" -UseBasicParsing -UseDefaultCredentials -Method "PUT" -Body $Body -ContentType "application/json"
 Start-Sleep 2
-(Invoke-WebRequest -UseDefaultCredentials -Method "GET" -Uri "https://dev-api.windows.arvato-systems.de/job/$(($Job.Content | ConvertFrom-Json).jobId)").Content
+(Invoke-WebRequest -UseDefaultCredentials -Method "GET" -Uri "https://dev-api.windows.server.de/job/$(($Job.Content | ConvertFrom-Json).jobId)").Content
 
 ### DELETE
 $Body = @{
@@ -256,6 +256,6 @@ $Body = @{
     'dryRun'      = $true
 }
 $Body = $Body | ConvertTo-Json
-$Job = Invoke-WebRequest -Uri "https://dev-api.windows.arvato-systems.de/disk-management/v1/disk" -UseBasicParsing -UseDefaultCredentials -Method "DELETE" -Body $Body -ContentType "application/json"
+$Job = Invoke-WebRequest -Uri "https://dev-api.windows.server.de/disk-management/v1/disk" -UseBasicParsing -UseDefaultCredentials -Method "DELETE" -Body $Body -ContentType "application/json"
 Start-Sleep 2
-(Invoke-WebRequest -UseDefaultCredentials -Method "GET" -Uri "https://dev-api.windows.arvato-systems.de/job/$(($Job.Content | ConvertFrom-Json).jobId)").Content
+(Invoke-WebRequest -UseDefaultCredentials -Method "GET" -Uri "https://dev-api.windows.server.de/job/$(($Job.Content | ConvertFrom-Json).jobId)").Content

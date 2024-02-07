@@ -1,19 +1,19 @@
 Function Resolve-TTL {
     <#
     .SYNOPSIS
-        Resolves TTL for a Serv in a domain. Default domain is set to server.arvato-systems.de.
+        Resolves TTL for a Serv in a domain. Default domain is set to server.server.de.
         If no Servername is given the Name of the local machine is assumed.
 
     .NOTES
         Name: Resolve-TTL
-        Author: Marvin.Krischker@bertelsmann.de
+        Author: Marvin.Krischker@outlook.de
         Version: 1.0
         DateCreated: 2021-Nov-25
 
 
     .EXAMPLE
         Resolve-TTL -Computername "Servername"
-        Resolve-TTL -Computername "Servername" -Domain server.arvato-systems.de
+        Resolve-TTL -Computername "Servername" -Domain server.server.de
 
     .LINK
 
@@ -33,7 +33,7 @@ Function Resolve-TTL {
                 ValueFromPipelineByPropertyName = $true,
                 Position = 1
                 )]
-                [array]$domain = @("server.arvato-systems.de")
+                [array]$domain = @("server.server.de")
         )
         BEGIN {
             $TTL = @()
@@ -70,4 +70,4 @@ Function Resolve-TTL {
         }
         END {}
     }
-Resolve-TTL #-computer "" -Domain "server.arvato-systems.de" -verbose | ft
+Resolve-TTL #-computer "" -Domain "server.server.de" -verbose | ft

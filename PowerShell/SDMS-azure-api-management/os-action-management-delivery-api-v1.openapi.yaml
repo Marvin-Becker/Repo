@@ -5,12 +5,12 @@ info:
   version: 1.0.0
   contact:
     name: Windows API Developer Team
-    email: frederik.schubert@bertelsmann.de
+    email: Marvin.Becker@outlook.de
 servers:
   - description: Test
-    url: https://api.sdms-dev.arvato-systems.de/managed-os/action/v1
+    url: https://api.sdms-dev.server.de/managed-os/action/v1
   - description: Production
-    url: https://api.sdms.arvato-systems.de/managed-os/action/v1
+    url: https://api.sdms.server.de/managed-os/action/v1
 tags:
   - name: action-deployment
     description: All operations for deploying an action

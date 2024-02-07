@@ -7,7 +7,7 @@ function Set-MdeOnboarding() {
 
     .NOTES
         Name: Set-MdeOnboarding
-        Author: Marvin Krischker | KRIS085 | NMD-I2.1 | Marvin.Krischker@bertelsmann.de
+        Author: Marvin Krischker  | Marvin.Krischker@outlook.de
         Date Created: 22.03.2022
         Last Update: 21.12.2022
 
@@ -16,7 +16,7 @@ function Set-MdeOnboarding() {
 		Set-MdeOnboarding -Customer OGE
 
     .LINK
-        https://wiki.arvato-systems.de/display/WS/OGE+-+Microsoft+Defender+for+Endpoint+in+der+Cloud
+        https://wiki.server.de/display/WS/OGE+-+Microsoft+Defender+for+Endpoint+in+der+Cloud
     #>
 
     [CmdletBinding(SupportsShouldProcess = $true)]
@@ -46,12 +46,12 @@ function Set-MdeOnboarding() {
     # Customer Workspaces
     if ($PSBoundParameters.ContainsKey("Customer")) {
         switch ($Customer) {
-            'OGE' {
-                $WorkSpace_ID = "86ca6e41-0de5-447e-a508-bcbb8607c466"
-                $WorkSpace_Key = "F4b26aTo2Q1EVPUlh3apcR25dpTSnfm4DJReGAnsB9QZ6ReBupU7ZelIZlsgz9yHUVmDnIWW6nudBEhgwIwCFQ=="
-                $ProxyIP = "10.48.34.5"
+            'XY' {
+                $WorkSpace_ID = ''
+                $WorkSpace_Key = ''
+                $ProxyIP = ''
                 $ProxyPort = 8085
-                $MdeScript = "WindowsDefenderATPLocalOnboardingScript-OGE.cmd"
+                $MdeScript = "WindowsDefenderATPLocalOnboardingScript.cmd"
             }
         }
     }
@@ -62,19 +62,19 @@ function Set-MdeOnboarding() {
     $DateStamp = Get-Date -UFormat "%Y-%m-%d@%H-%M-%S"
     $Result += $DateStamp
     $Result += "-----------------------------------"
-    $LogFile = "C:\SZIR\MDE-Onboarding_" + $ENV:COMPUTERNAME + "_$DateStamp.log"
+    $LogFile = "C:\temp\MDE-Onboarding_" + $ENV:COMPUTERNAME + "_$DateStamp.log"
     if (-not $PSBoundParameters.ContainsKey("Thumbprint")) {
         $Thumbprint = "d4de20d05e66fc53fe1a50882c78db2852cae474"
         $Certificate = "Baltimore Cybertrust Certificate"
     }
     if (-not $PSBoundParameters.ContainsKey("CertPath")) {
-        $CertPath = "C:\SZIR\Baltimore CyberTrust.cer"
+        $CertPath = "C:\temp\Baltimore CyberTrust.cer"
     }
     if (-not $Certificate) {
         $Certificate = "The requested Certificate"
     }
     if (-not $MdeScriptPath) {
-        $MdeScriptPath = "C:\SZIR\$MdeScript"
+        $MdeScriptPath = "C:\temp\$MdeScript"
     }
     $Proxy = "$ProxyIP`:$ProxyPort"
 
@@ -296,9 +296,9 @@ Set-MdeOnboarding -Customer OGE
 ### Variante 2 ###
 # Parameter für Funktionsaufruf mit individuellen Werten (am Beispiel OGE):
 $Parameter = @{
-    WorkSpace_ID  = "86ca6e41-0de5-447e-a508-bcbb8607c466"
-    WorkSpace_Key = "F4b26aTo2Q1EVPUlh3apcR25dpTSnfm4DJReGAnsB9QZ6ReBupU7ZelIZlsgz9yHUVmDnIWW6nudBEhgwIwCFQ=="
-    ProxyIP       = "10.48.34.5"
+    WorkSpace_ID  = ''
+    WorkSpace_Key = ''
+    ProxyIP       = ''
     ProxyPort     = "8085"
 }
 # Funktionsaufruf mit Parameterliste

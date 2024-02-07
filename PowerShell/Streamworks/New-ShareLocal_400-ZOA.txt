@@ -8,7 +8,7 @@
    Runs with Local Rights.
 .NOTES
     Name: New-ShareLocal
-    Author: Marvin Becker | KRIS085 | NMD-FS4.1 | Marvin.Becker@bertelsmann.de
+    Author: Marvin Becker  | Marvin.Becker@outlook.de
     Date Created: 12.05.2023
     Last Update: 29.06.2023
 #>

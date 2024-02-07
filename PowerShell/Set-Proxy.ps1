@@ -18,11 +18,11 @@
     Set-Proxy -IP 1.1.1.1 -HTTPPort 80 -FTPPort 21 -Global
 
     # Set a systemwide proxy with Bypasslist
-    Set-Proxy -IP 10.16.97.119 -Port 3128 -Global -ByPassList "filetransfer.arvato-infoscore.de", "10.*"
+    Set-Proxy -IP 10.16.97.119 -Port 3128 -Global -ByPassList "filetransfer.server-infoscore.de", "10.*"
     Set-Proxy -IP 172.26.56.254 -Port 8080 -Global -Bypasslist "172.26.*","*.alfa.local","127.0.0.*","*.tennet.eu"
 
     # Set proxy for currently logged in user which should use a configuration script
-    Set-Proxy -Pac 'www.arvato-systems.com'
+    Set-Proxy -Pac 'www.server.com'
 
     .OUTPUTS
     Returns a PSCustomObject with the properties Returncode (Int32) and Returnmessage (String)
@@ -30,7 +30,7 @@
 
 <#
     Author
-    Sebastian Moock | NMD-I2.1 | sebastian.moock@bertelsmann.de
+    Marvin Becker | NMD-I2.1 | Marvin.Becker@outlook.de
 #>
 #endregion documentation
 

@@ -7,16 +7,16 @@ The script will detect the current boot-disk and the new RAW disk and set up the
 Then it configures the BCD to boot from the new disk. After a restart, the old disk can be removed and the mirror broken.
 
 .NOTES
-Author: Marvin Krischker | KRIS085 | NMD-FS4.1 | marvin.krischker@bertelsmann.de
+Author: Marvin Krischker  | marvin.krischker@outlook.de
 Last Update: 02.03.2023
 #>
 
-$Logfile = "C:\SZIR\BootLun.log"
+$Logfile = "C:\temp\BootLun.log"
 $ErrorActionPreference = "SilentlyContinue"
 
 # Saving current BCD-file and BCD enum output
-"bcdedit /export C:\SZIR\BCD_save" | cmd >> $Logfile
-"bcdedit /enum all" | cmd >> "C:\SZIR\BCD_enum.txt"
+"bcdedit /export C:\temp\BCD_save" | cmd >> $Logfile
+"bcdedit /enum all" | cmd >> "C:\temp\BCD_enum.txt"
 
 # Power off Hibernation
 "powercfg.exe /h off" | cmd >> $Logfile
@@ -245,7 +245,7 @@ $CustomObject | Add-Member -type NoteProperty -Name BootmgrNew -Value (bcdedit /
 
 if ((Test-Object -CustomObject $CustomObject) -ne 0) {
     Write-Output "Error: new Bootmgr identifier is missing"
-    "bcdedit /import C:\SZIR\BCD_save" | cmd >> $Logfile
+    "bcdedit /import C:\temp\BCD_save" | cmd >> $Logfile
     Exit
 } else {
     Write-Output "New Bootmgr Identifier was identified." >> $Logfile
@@ -269,7 +269,7 @@ $CustomObject | Add-Member -type NoteProperty -Name WindowsNew -Value (bcdedit /
 
 if ((Test-Object -CustomObject $CustomObject) -ne 0) {
     Write-Output "Error: A new identifier is missing"
-    "bcdedit /import C:\SZIR\BCD_save" | cmd >> $Logfile
+    "bcdedit /import C:\temp\BCD_save" | cmd >> $Logfile
     Exit
 } else {
     Write-Output "All new Identifiers were identified." >> $Logfile

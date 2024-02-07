@@ -98,7 +98,7 @@ if ($Content) {
 $Body = @{
     'servername' = 'gtrynwve13447';
     'accessType' = 'RDP';
-    'users'      = 'admkris085';
+    'users'      = 'admin';
     'domain'     = 'asysservice.de';
     'orderId'    = 'ASYS-Order-0000123';
     'dryRun'     = $true

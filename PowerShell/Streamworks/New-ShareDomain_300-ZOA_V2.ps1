@@ -8,7 +8,7 @@
     Runs with Domain Rights.
 .NOTES
     Name: New-ShareDomain
-    Author: Marvin Becker | KRIS085 | NMD-FS4.1 | Marvin.Becker@bertelsmann.de
+    Author: Marvin Becker  | Marvin.Becker@outlook.de
     Date Created: 12.05.2023
     Last Update: 01.06.2023
 #>
@@ -35,25 +35,25 @@ if ( $ShareDevice -like 'C' ) {
 
 # create groups in active directory OU besides anchor
 Add-WindowsFeature RSAT-AD-PowerShell | Out-Null
-function Find-ArvatoTree {
+function Find-Tree {
     [CmdletBinding()]
     param ()
 
     $ADAnchor = 'Reference Group OU Path'
     try {
-        $FullArvatoADPath = (Get-ADGroup -Filter { Name -like $ADAnchor } -ErrorAction Stop).DistinguishedName
+        $FullADPath = (Get-ADGroup -Filter { Name -like $ADAnchor } -ErrorAction Stop).DistinguishedName
     } catch {
         $RC = 1
     }
-    if ($FullArvatoADPath) {
-        $FullArvatoADPathArray = $FullArvatoADPath.Split( ',' , 2 )
-        return $FullArvatoADPathArray[-1]
+    if ($FullADPath) {
+        $FullADPathArray = $FullADPath.Split( ',' , 2 )
+        return $FullADPathArray[-1]
     } else {
         return $RC
     }
 }
 
-$ADBaseOU = Find-ArvatoTree
+$ADBaseOU = Find-Tree
 
 if ( $ADBaseOU -eq 1 ) {
     $ErrorMessage += 'Error: AD-Anchor-Group not found. '

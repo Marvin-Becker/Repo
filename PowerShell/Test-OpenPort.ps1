@@ -108,7 +108,7 @@ function Test-OpenPort {
                 }
                 'CMK' {
                     try {
-                        $CheckMKRegistryPath = 'HKLM:\SOFTWARE\Arvato\OSConfig\CheckMK'
+                        $CheckMKRegistryPath = 'HKLM:\SOFTWARE\OSConfig\CheckMK'
                         $CheckMkSiteServer = Get-ItemPropertyValue -Path $CheckMKRegistryPath -Name 'CheckMkSiteServer' -ErrorAction Stop
                         switch -Wildcard ($CheckMkSiteServer) {
                             '*gtloccmks*' {
@@ -140,12 +140,12 @@ function Test-OpenPort {
                 }
                 'DDS' {
                     # Datendrehscheibe Admin und Office PSA
-                    $TargetsToTest += 'fes-a.server.arvato-systems.de'
-                    $TargetsToTest += 'fes-o.server.arvato-systems.de'
+                    $TargetsToTest += 'fes-a.server.server.de'
+                    $TargetsToTest += 'fes-o.server.server.de'
                 }
                 'SWS' {
                     #SWS Round Robin DNS
-                    $TargetsToTest += "sw-ps-prod.server.arvato-systems.de"
+                    $TargetsToTest += "sw-ps-prod.server.server.de"
                 }
                 'McAfee' {
                     try {

@@ -30,7 +30,7 @@ Register-ScheduledTask $TaskName -Action $Action -Description $Description -Prin
 $TaskName = "Boot-LUN"
 $Description = "Mirror the Boot-LUN"
 $RunningUser = "SYSTEM"
-$FilePath = "C:\SZIR\Mirror.ps1"
+$FilePath = "C:\temp\Mirror.ps1"
 $Execute = "PowerShell.exe"
 $Argument = "-NoProfile -NoLogo -NonInteractive -ExecutionPolicy Bypass -File " + "`"" + $FilePath + "`""
 

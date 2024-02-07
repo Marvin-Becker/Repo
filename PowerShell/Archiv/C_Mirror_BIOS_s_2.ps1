@@ -1,4 +1,4 @@
-$Logfile =  "C:\SZIR\BootLun.log"
+$Logfile =  "C:\temp\BootLun.log"
 $Abort = $False
 $ErrorActionPreference = "SilentlyContinue"
 

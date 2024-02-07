@@ -3,7 +3,7 @@
     This Script will set the given service to the desired state.
 .NOTES
     Name: Set-ServiceStatus
-    Author: Marvin Becker | KRIS085 | NMD-FS4.1 | Marvin.Becker@bertelsmann.de
+    Author: Marvin Becker  | Marvin.Becker@outlook.de
     Date Created: 01.06.2023
     Last Update: 16.06.2023
 .EXAMPLE

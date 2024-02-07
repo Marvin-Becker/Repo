@@ -15,21 +15,21 @@ PROCESS {
     # }
     'Process'
 
-    function Find-ArvatoTree {
+    function Find-Tree {
         [CmdletBinding()]
         param ()
 
         $ErrorMessage = 'Error: AD-Anchor-Group not found. '
         
-        if ($FullArvatoADPath) {
-            $FullArvatoADPathArray = $FullArvatoADPath.Split( ',' , 2 )
-            return $FullArvatoADPathArray[-1]
+        if ($FullADPath) {
+            $FullADPathArray = $FullADPath.Split( ',' , 2 )
+            return $FullADPathArray[-1]
         } else {
             return $ErrorMessage # 'return' springt hier aus der Funktion
         }
     }
 
-    $ADBaseOU = Find-ArvatoTree
+    $ADBaseOU = Find-Tree
 
     if ( $ADBaseOU -eq 'Error: AD-Anchor-Group not found. ') {
         $Result += 'Error: AD-Anchor-Group not found. '

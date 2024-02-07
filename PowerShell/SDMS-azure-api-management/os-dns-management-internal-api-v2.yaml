@@ -5,9 +5,9 @@ info:
   version: 2.0.0
   contact:
     name: Windows API Developer Team
-    email: frederik.schubert@bertelsmann.de
+    email: Marvin.Becker@outlook.de
 servers:
-  - url: https://api.sdms-dev.arvato-systems.de/managed-os/internal/dns-management/v2
+  - url: https://api.sdms-dev.server.de/managed-os/internal/dns-management/v2
 tags:
   - name: forward-records
     description: All operations for DNS forward records
@@ -153,9 +153,9 @@ components:
       properties:
         zoneName:
           type: string
-          description: Name of the zone for the new DNS record. Default is server.arvato-systems.de. Validateset is 'server.arvato-systems.de'
-          example: server.arvato-systems.de
-          default: server.arvato-systems.de
+          description: Name of the zone for the new DNS record. Default is server.server.de. Validateset is 'server.server.de'
+          example: server.server.de
+          default: server.server.de
         servername:
           type: string
           description: Servername for the new DNS record. Validationpattern is ^[a-zA-Z0-9-]+$
@@ -183,9 +183,9 @@ components:
       properties:
         zoneName:
           type: string
-          description: Name of the zone for the new DNS record. Default is server.arvato-systems.de. Validateset is 'server.arvato-systems.de'
-          example: server.arvato-systems.de
-          default: server.arvato-systems.de
+          description: Name of the zone for the new DNS record. Default is server.server.de. Validateset is 'server.server.de'
+          example: server.server.de
+          default: server.server.de
         servername:
           type: string
           description: Servername for the new DNS record. Validationpattern is ^[a-zA-Z0-9-]+$
@@ -213,7 +213,7 @@ components:
         zoneName:
           type: string
           description: name of the dns zone the records are located in
-          example: server.arvato-systems.de
+          example: server.server.de
         servername:
           type: string
           description: Servername for the new DNS record. Validationpattern is ^[a-zA-Z0-9-]+$

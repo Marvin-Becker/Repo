@@ -3,12 +3,12 @@
 This script created domain local and global permission groups.
 
 .DESCRIPTION
-All computer objects in a managed Arvato Systems OU are collected and for each one RDP and local admin permission groups are created.
+All computer objects in a managed  OU are collected and for each one RDP and local admin permission groups are created.
 #>
 
 <#
 Author
-Sebastian Moock | NMD-I2.1 | sebastian.moock@bertelsmann.de
+Marvin Becker | NMD-I2.1 | Marvin.Becker@outlook.de
 19.11.2021
 #>
 
@@ -23,7 +23,7 @@ Import-Module ActiveDirectory
 # Definitions of some global variables that are not going to change.
 $GlobalGroupOU = 'User Tasks'
 $LocalGroupOU = 'Local Tasks Server'
-$GroupPath = 'OU=GRP,OU=0997,OU=arvato systems group,DC=asysservice,DC=de'
+$GroupPath = 'OU=GRP,OU=0997,OU=group,DC=asysservice,DC=de'
 $GlobalGroupOUPath = 'OU=' + $GlobalGroupOU + ',' + $GroupPath
 $LocalGroupOUPath = 'OU=' + $LocalGroupOU + ',' + $GroupPath
 $Server = (Get-ADComputer -Filter * | Where-Object { $_.DistinguishedNAme -notlike "*OU=Domain Controllers*" }).Name
@@ -47,7 +47,7 @@ foreach ($Object in $Server) {
         GroupCategory   = 'Security'
         GroupScope      = 'Global'
         DisplayName     = $Object + "_USR_LocalAdmin"
-        Path            = $GlobalGroupOUPath #'OU=User Tasks,OU=GRP,OU=0997,OU=arvato systems group,DC=asysservice,DC=de'
+        Path            = $GlobalGroupOUPath #'OU=User Tasks,OU=GRP,OU=0997,OU=group,DC=asysservice,DC=de'
         Description     = "User m. lokal Admin Rechte f. " + $Object
         OtherAttributes = @{ info = $GlobalGroupAdminInfo }
     }
@@ -58,7 +58,7 @@ foreach ($Object in $Server) {
         GroupCategory   = 'Security'
         GroupScope      = 'DomainLocal'
         DisplayName     = $Object + "_LocalAdmin"
-        Path            = $LocalGroupOUPath #'OU=Local Tasks Server,OU=GRP,OU=0997,OU=arvato systems group,DC=asysservice,DC=de'
+        Path            = $LocalGroupOUPath #'OU=Local Tasks Server,OU=GRP,OU=0997,OU=group,DC=asysservice,DC=de'
         Description     = "Local Admin Zugriff f. " + $Object
         OtherAttributes = @{ info = $DomainLocalAdminInfo }
     }
@@ -69,7 +69,7 @@ foreach ($Object in $Server) {
         GroupCategory   = 'Security'
         GroupScope      = 'Global'
         DisplayName     = $Object + "_USR_RDP"
-        Path            = $GlobalGroupOUPath #'OU=User Tasks,OU=GRP,OU=0997,OU=arvato systems group,DC=asysservice,DC=de'
+        Path            = $GlobalGroupOUPath #'OU=User Tasks,OU=GRP,OU=0997,OU=group,DC=asysservice,DC=de'
         Description     = "User m. RDP Rechte f. " + $Object
         OtherAttributes = @{ info = $GlobalGroupRDPInfo }
     }
@@ -80,7 +80,7 @@ foreach ($Object in $Server) {
         GroupCategory   = 'Security'
         GroupScope      = 'DomainLocal'
         DisplayName     = $_ + "_RDP"
-        Path            = $LocalGroupOUPath #'OU=Local Tasks Server,OU=GRP,OU=0997,OU=arvato systems group,DC=asysservice,DC=de'
+        Path            = $LocalGroupOUPath #'OU=Local Tasks Server,OU=GRP,OU=0997,OU=group,DC=asysservice,DC=de'
         Description     = "RDP Zugriff f. " + $Object
         OtherAttributes = @{ info = $DomainLocalRDPInfo }
     }

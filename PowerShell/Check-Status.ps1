@@ -6,7 +6,7 @@ function Check-Status() {
 
     .NOTES
         Name: Check-Status
-        Author: Marvin Krischker | KRIS085 | NMD-I2.1 | Marvin.Krischker@bertelsmann.de
+        Author: Marvin Krischker  | Marvin.Krischker@outlook.de
         Date Created: 27.06.2022
         Last Update: 28.06.2022
 
@@ -14,7 +14,7 @@ function Check-Status() {
         Check-Status -Path "Path"
 
     .LINK
-        https://wiki.arvato-systems.de/
+        https://wiki.server.de/
     #>
 
     [CmdletBinding()]

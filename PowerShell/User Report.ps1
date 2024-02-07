@@ -8,7 +8,7 @@ This Script swaps out Everyone permissions in shares with Domain Users.
 
 <#
 Author
-Sebastian Moock | NMD-I2.1 | sebastian.moock@bertelsmann.de
+Marvin Becker | NMD-I2.1 | Marvin.Becker@outlook.de
 
 Date
 09.03.2021
@@ -227,7 +227,7 @@ Foreach ($Member in $Global:MemberResult)
 
 
 $CurrentDate = Get-Date -Format "yyyy-MM-dd"
-$Outputfile = "C:\SZIR\$ComputerName" + "_user_report_" + "$CurrentDate.csv"
+$Outputfile = "C:\temp\$ComputerName" + "_user_report_" + "$CurrentDate.csv"
 
 $Global:FinalResult | Export-Csv -Path $Outputfile -NoTypeInformation
 

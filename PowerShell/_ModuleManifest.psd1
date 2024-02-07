@@ -5,7 +5,7 @@
     # CompatiblePSEditions = @()
     GUID = 'e7184b71-2527-469f-a50e-166b612dfb3b'
     Author = 'Marvin Krischker'
-    CompanyName = 'Arvato Systems'
+    CompanyName = ''
     Copyright = '(c) 2022 Marvin Krischker. All rights reserved.'
     # Description = ''
     # PowerShellVersion = ''

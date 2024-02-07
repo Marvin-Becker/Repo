@@ -6,7 +6,7 @@ function Set-NewIpAddress {
         If you forget a mandatory parameter it will not run and tell you why.
     .NOTES
         Name: Set-NewIpdAdress
-        Author: Marvin Becker | KRIS085 | NMD-FS4.1 | Marvin.Becker@bertelsmann.de
+        Author: Marvin Becker  | Marvin.Becker@outlook.de
         Date Created: 26.11.2021
         Last Update: 21.12.2022
     .EXAMPLE
@@ -151,12 +151,12 @@ function Set-NewIpAddress {
     }
     Start-Sleep -s 3
     if (($DialogError -ne $true) -AND ($BackupError -ne $true)) {
-        $IPConfig = "C:\SZIR\ipconfigall.txt"
+        $IPConfig = "C:\temp\ipconfigall.txt"
         if (Test-Path $IPConfig) {
             $DateStamp = Get-Date -UFormat "%Y-%m-%d@%H-%M-%S"
             $NewName = "ipconfigall_saved_$DateStamp.txt"
             Rename-Item $IPConfig -NewName $NewName
-            Write-Verbose "Old IPConfig saved in C:\SZIR\$NewName"
+            Write-Verbose "Old IPConfig saved in C:\temp\$NewName"
         }
         ipconfig /all > $IPConfig
     }

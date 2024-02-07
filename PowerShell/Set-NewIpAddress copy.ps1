@@ -6,7 +6,7 @@ function Set-NewIpAddress {
         If you forget a mandatory parameter it will not run and tell you why.
     .NOTES
         Name: Set-NewIpdAdress
-        Author: Marvin Krischker | KRIS085 | NMD-I2.1 | Marvin.Krischker@bertelsmann.de
+        Author: Marvin Krischker  | Marvin.Krischker@outlook.de
         Date Created: 26.11.2021
         Last Update: 21.12.2022
     .EXAMPLE
@@ -16,7 +16,7 @@ function Set-NewIpAddress {
         Set-NewIpAddress @Parameter
 
     .LINK
-        https://wiki.arvato-systems.de/display/WS/How+to+change+IPs+via+Powershell
+        https://wiki.server.de/display/WS/How+to+change+IPs+via+Powershell
     #>
     [CmdletBinding(SupportsShouldProcess = $true)]
     [OutputType([PSCustomObject])]
@@ -159,12 +159,12 @@ function Set-NewIpAddress {
     }
     Start-Sleep -s 3
     if (($DialogError -ne $true) -AND ($BackupError -ne $true)) {
-        $IPConfig = "C:\SZIR\ipconfigall.txt"
+        $IPConfig = "C:\temp\ipconfigall.txt"
         if (Test-Path $IPConfig) {
             $DateStamp = Get-Date -UFormat "%Y-%m-%d@%H-%M-%S"
             $NewName = "ipconfigall_saved_$DateStamp.txt"
             Rename-Item $IPConfig -NewName $NewName
-            Write-Verbose "Old IPConfig saved in C:\SZIR\$NewName"
+            Write-Verbose "Old IPConfig saved in C:\temp\$NewName"
         }
         ipconfig /all > $IPConfig
     }

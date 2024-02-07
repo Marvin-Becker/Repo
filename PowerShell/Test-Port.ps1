@@ -36,7 +36,7 @@ Test-NetConnection -computername  -port
 (Test-NetConnection -computername "10.48.34.5" -port "8085").TcpTestSucceeded
 
 SCOM-Gateways [5723]:
-$FailoverGW = (Get-ItemProperty -Path "HKLM:\Software\Arvato\OSConfig\SCOM" -Name "FailoverGW" | Select-Object FailoverGW).FailoverGW
+$FailoverGW = (Get-ItemProperty -Path "HKLM:\Software\OSConfig\SCOM" -Name "FailoverGW" | Select-Object FailoverGW).FailoverGW
 Test-NetConnection -computername $FailoverGW -port 5723
 
 BGROUP = "10.205.5.143,10.205.5.142"

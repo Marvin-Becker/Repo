@@ -26,4 +26,4 @@ $TCPCon = $null | Out-Null
 Test-TCPConnection
 
 
-Test-NetConnection -ComputerName sw-ps-prod.server.arvato-systems.de -Port 9600
+Test-NetConnection -ComputerName sw-ps-prod.server.server.de -Port 9600

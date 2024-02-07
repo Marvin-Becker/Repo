@@ -8,39 +8,32 @@ This script restarts the WMI service and flushes the SCOM agent.
  
 <#
 Author
-Sebastian Moock | NMD-I2.1 | sebastian.moock@bertelsmann.de
+Marvin Becker | NMD-I2.1 | Marvin.Becker@outlook.de
  
 Date 14.11.2019
 #>
  
  
 # Variables
-$scomService = get-service -name HealthService
-$wmiService = get-service -name Winmgmt
+$scomService = Get-Service -Name HealthService
+$wmiService = Get-Service -Name Winmgmt
 [System.Collections.ArrayList]$ServicesToRestart = @()
  
-function Custom-GetServiceDependencies ($ServiceInput)
-{
+function Custom-GetServiceDependencies ($ServiceInput) {
     Write-Host "Number of dependents: $($ServiceInput.DependentServices.Count)"
-    If ($ServiceInput.DependentServices.Count -gt 0)
-    {
-        ForEach ($DepService in $ServiceInput.DependentServices)
-        {
+    If ($ServiceInput.DependentServices.Count -gt 0) {
+        ForEach ($DepService in $ServiceInput.DependentServices) {
             Write-Host "Dependent of $($ServiceInput.Name): $($Service.Name)"
-            If ($DepService.Status -eq "Running")
-            {
+            If ($DepService.Status -eq "Running") {
                 Write-Host "$($DepService.Name) is running."
                 $CurrentService = Get-Service -Name $DepService.Name
                 Custom-GetServiceDependencies $CurrentService
-            }
-            Else
-            {
+            } Else {
                 Write-Host "$($DepService.Name) is stopped. No Need to stop or start or check dependencies."
             }
         }
     }
-    if ($ServicesToRestart.Contains($ServiceInput.Name) -eq $false)
-    {
+    if ($ServicesToRestart.Contains($ServiceInput.Name) -eq $false) {
         $ServicesToRestart.Add($ServiceInput.Name)
     }
 }
@@ -50,30 +43,25 @@ function Custom-GetServiceDependencies ($ServiceInput)
 Custom-GetServiceDependencies -ServiceInput $wmiService
  
 # Stop of dependent services
-foreach ($ServiceToStop in $ServicesToRestart)
-{
+foreach ($ServiceToStop in $ServicesToRestart) {
     Write-Host "Stopping Service $ServiceToStop"
     Stop-Service $ServiceToStop -Verbose -Force
 }
  
 # Start of dependent services
 $ServicesToRestart.Reverse()
-foreach ($ServiceToStart in $ServicesToRestart)
-{
+foreach ($ServiceToStart in $ServicesToRestart) {
     Write-Host "Starting Service $ServiceToStart"
     Start-Service $ServiceToStart -Verbose
 }
  
 # SCOM Flush
-if (Get-Service "HealthService")
-{
+if (Get-Service "HealthService") {
     Stop-Service $scomService.Name -Verbose
-    Remove-Item -path "C:\Program Files\Microsoft Monitoring Agent\Agent\Health Service State\*" -recurse -force
+    Remove-Item -Path "C:\Program Files\Microsoft Monitoring Agent\Agent\Health Service State\*" -Recurse -Force
     Start-Service $scomService.Name -Verbose
     Write-Host "SCOM agent has been flushed." -ForegroundColor Green
-}
-elseif (-not(Get-Service "HealthService"))
-{
+} elseif (-not(Get-Service "HealthService")) {
     Write-Host "SCOM is not present on this server." -ForegroundColor Red
 }
  
@@ -82,8 +70,7 @@ elseif (-not(Get-Service "HealthService"))
 $Source = "SCOM Flush"
 $SourceExist = [System.Diagnostics.EventLog]::SourceExists($Source);
  
-if (-not $SourceExist)
-{
+if (-not $SourceExist) {
     New-Eventlog -LogName Application -Source "SCOM Flush"
 }
  

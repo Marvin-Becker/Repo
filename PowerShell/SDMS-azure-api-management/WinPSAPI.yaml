@@ -5,9 +5,9 @@ info:
   version: v1
 servers:
   - description: Test
-    url: https://api.sdms-dev.arvato-systems.de/windows/v1
+    url: https://api.sdms-dev.server.de/windows/v1
   - description: Production
-    url: https://api.sdms.arvato-systems.de/windows/v1
+    url: https://api.sdms.server.de/windows/v1
 paths:
   /*:
     post:

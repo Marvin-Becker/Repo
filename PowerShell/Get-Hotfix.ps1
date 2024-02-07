@@ -5,7 +5,7 @@ function Get-InstalledHotfix {
 
     .NOTES
         Name: 
-        Author: Marvin Krischker | KRIS085 | NMD-I2.1 | Marvin.Krischker@bertelsmann.de
+        Author: Marvin Krischker  | Marvin.Krischker@outlook.de
         Date Created: 11.07.2022
         Last Update:
 
@@ -13,7 +13,7 @@ function Get-InstalledHotfix {
         Get-InstalledHotfix -Updates "KB5014701", "KB5014702"
 
     .LINK
-        https://wiki.arvato-systems.de/
+        https://wiki.server.de/
     #>
 
     [CmdletBinding()]
@@ -44,7 +44,7 @@ function Get-InstalledHotfix {
 Get-InstalledHotfix -Updates "KB5014702", "KB5014701"
 
 ## Alternative
-Get-WmiObject -Class win32_quickfixengineering | Where-Object HotFixID -eq KB3080149 
+Get-WmiObject -Class win32_quickfixengineering | Where-Object HotFixID -EQ KB3080149 
 
 ### Updates from today
 Get-HotFix | Where-Object InstalledOn -EQ ([datetime]::Today)

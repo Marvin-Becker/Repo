@@ -4,7 +4,7 @@ $Source = "asy_file"
 
 $eventid = "815"
 
-#$logfile2 = "c:\szir\asy_file2.txt"
+#$logfile2 = "c:\temp\asy_file2.txt"
 
 $msg = @()
 
@@ -20,47 +20,45 @@ $logfile = "X:\Log4J.log"
 
 
 
-    foreach ($drive in $drives) {
+foreach ($drive in $drives) {
 
-        if ($drive.DriveType -eq 3) {
+    if ($drive.DriveType -eq 3) {
 
-                $driveletter = $drive.DeviceID +"\"
+        $driveletter = $drive.DeviceID + "\"
 
-                foreach($ext in $arrExtensions) {
+        foreach ($ext in $arrExtensions) {
 
-                       $items = Get-ChildItem -recurse -force -filter $ext -erroraction silentlycontinue $driveletter | Select FullName #, CreationTime, LastWriteTime #| Format-Table -Wrap -AutoSize CreationTime, LastWriteTime, FullName
-                       $items
-                              if ($items -eq $null) {} else {
-                                                        foreach($Pfad in $items)
-                                                        {
+            $items = Get-ChildItem -Recurse -Force -Filter $ext -ErrorAction silentlycontinue $driveletter | select FullName #, CreationTime, LastWriteTime #| Format-Table -Wrap -AutoSize CreationTime, LastWriteTime, FullName
+            $items
+            if ($items -eq $null) {} else {
+                foreach ($Pfad in $items) {
 
-                                                            $handle = C:\szir\bin\handle.exe ""$Pfad.FullName""
+                    $handle = C:\temp\bin\handle.exe ""$Pfad.FullName""
 
-                                                            foreach ($line in $handle) {
+                    foreach ($line in $handle) {
 
-                                                            if ($line -match '\S+\spid:') {
-                                                                    $exe = $line
-                                                              }
-                                                              else { $exe = "No Filehandle" }
+                        if ($line -match '\S+\spid:') {
+                            $exe = $line
+                        } else { $exe = "No Filehandle" }
 
-                                                                    }
+                    }
 
 
-                                                            #$items | out-file $logfile -Append
-                                                            #$msg = $null
-                                                            $msg = $env:COMPUTERNAME + ";" + $Pfad.FullName + ";" + $exe
+                    #$items | out-file $logfile -Append
+                    #$msg = $null
+                    $msg = $env:COMPUTERNAME + ";" + $Pfad.FullName + ";" + $exe
 
-                                                            $msg | out-file $logfile -Encoding utf8 -Append
-                                                            #$msg | out-file $logfile2 -Encoding utf8 -Append
+                    $msg | Out-File $logfile -Encoding utf8 -Append
+                    #$msg | out-file $logfile2 -Encoding utf8 -Append
 
-                                                        }
-                                                    }
-                                               }
+                }
+            }
+        }
 
 
-
-                                    }
 
     }
 
-     net use /del X:
+}
+
+net use /del X:

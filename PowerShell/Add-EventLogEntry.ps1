@@ -2,11 +2,11 @@ function Add-EventLogEntry {
     <#
     .SYNOPSIS
     Does basicly the same as Write-Eventlog. Tests if Logname and Source exist and creates them if not.
-    Could be used to Filter possible Sources and Logs to a Range specifed be Arvato Systems Windows Server Team by using ValidateSet.
+    Could be used to Filter possible Sources and Logs to a Range specifed be  Windows Server Team by using ValidateSet.
 
     .NOTES
     Name: Add-EventLogEntry
-    Author: Sebastian Moock | Sebastian.Moock@bertelsmann.de
+    Author: Marvin Becker | Marvin.Becker@outlook.de
     Version: 1.1
     DateCreated:
 

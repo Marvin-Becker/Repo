@@ -82,7 +82,7 @@ Get-Service | Where-Object { $_.Status -eq "Running" }
 
 "Hallo PowerShell".ToLower() # -> hallo powershell
 "Hallo PowerShell".Substring(0, 5) # -> Erste Zahl = Startzeichen, zweite Zahl = Anzahl Zeichen -> Hallo
-("OU=USR,OU=arvato systems group,DC=ASYSSERVICE,DC=de".Split(",")[1]).Substring(3) # = arvato systems group
+("OU=USR,OU=group,DC=ASYSSERVICE,DC=de".Split(",")[1]).Substring(3) # = group
 
 # Match
 #  > $NULL entfernt die Ausgabe "True"
@@ -115,7 +115,7 @@ $OSVersion = $Matches.Values
 # Objekte suchen
 Get-ChildItem C: | Where-Object Length -GT 100MB
 Get-ChildItem C: | Where-Object { $_.Length -gt 100MB -and $_.IsReadOnly -ne "True" }
-(Get-ChildItem -Path "C:\SZIR" -Recurse | Where-Object Name -Like "TreeSizeFree.exe").FullName # -> C:\SZIR\TreeSizeFree.exe
+(Get-ChildItem -Path "C:\temp" -Recurse | Where-Object Name -Like "TreeSizeFree.exe").FullName # -> C:\temp\TreeSizeFree.exe
 
 # Objekte verarbeiten
 "Ordner 1", "Ordner 2", "Ordner 3" | ForEach-Object { New-Item -Type Directory -Path $_ } # Ordner in aktueller Arbeitsumgebung ($_) anlegen
@@ -199,12 +199,12 @@ if (condition) {}
 elseif (condition) {}
 else {}
 
-$IPConfig = "C:\SZIR\ipconfigall.txt"
+$IPConfig = "C:\temp\ipconfigall.txt"
 if (Test-Path $IPConfig) {
     $DateStamp = Get-Date -UFormat "%Y-%m-%d@%H-%M-%S"
     $NewName = "ipconfigall_saved_$DateStamp.txt"
     Rename-Item $IPConfig -NewName $NewName
-    $Result += "Old IPConfig saved in C:\SZIR\$NewName"
+    $Result += "Old IPConfig saved in C:\temp\$NewName"
 }
 
 switch ($x) {

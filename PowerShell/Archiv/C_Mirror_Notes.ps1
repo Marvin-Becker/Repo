@@ -4,15 +4,15 @@
 VMware Test
 VLAN_2489
 ISO einbinden über \\gtlnmiwvm1827\install$
-UEFI-Server: Test-KRIS085
+UEFI-Server: Test-marvin
 10.6.255.10
 10.6.255.1
-BIOS-Server: KRIS085-Test
+BIOS-Server: marvin-Test
 10.6.255.12
 10.6.255.1
 
 VCD:
-kris085test01
+marvintest01
 10.161.207.136
 MqeyWPmL_RlU4A*i2T9EasJ%
 
@@ -30,20 +30,20 @@ $bootmgr -match '{.*}'
 #>
 
 function Test-Regex {
-[CmdletBinding()]
-param (
-[parameter(Mandatory=$true)]$Pattern,
-[parameter(Mandatory=$true)][String]$String
-)
+    [CmdletBinding()]
+    param (
+        [parameter(Mandatory = $true)]$Pattern,
+        [parameter(Mandatory = $true)][String]$String
+    )
 
-$FullPattern = "(?smi)$Pattern"
-$Regex = new-object regex($FullPattern)
-$Result = $Regex.Matches($String)
-if ($Result.Count -eq 0) {
-return $false
-} else {
-return $true
-}
+    $FullPattern = "(?smi)$Pattern"
+    $Regex = New-Object regex($FullPattern)
+    $Result = $Regex.Matches($String)
+    if ($Result.Count -eq 0) {
+        return $false
+    } else {
+        return $true
+    }
 }
 
 
@@ -59,14 +59,14 @@ $result = $diskpart | diskpart
 
 # Always finds "Volume #" so we start at -1
 $PartCount = -1
-for($line = 0; $line -lt $result.Count; $line++) {
-	if ($result[$line] -like "*Volume*") {
-	$PartCount++
-}
+for ($line = 0; $line -lt $result.Count; $line++) {
+    if ($result[$line] -like "*Volume*") {
+        $PartCount++
+    }
 }
 
 # Display the list of partitions on first disk (disk 0)
-get-disk | select *
+Get-Disk | select *
 
 
 

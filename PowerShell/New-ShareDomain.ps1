@@ -28,22 +28,22 @@ if ( $ShareDevice -like 'C' ) {
 
 # create groups in active directory OU besides anchor
 Add-WindowsFeature RSAT-AD-PowerShell | Out-Null
-function Find-ArvatoTree {
+function Find-Tree {
     [CmdletBinding()]
     param ()
 
     $ADAnchor = 'Reference Group OU Path'
     try {
-        $FullArvatoADPath = (Get-ADGroup -Filter { Name -like $ADAnchor } -ErrorAction Stop).DistinguishedName
+        $FullADPath = (Get-ADGroup -Filter { Name -like $ADAnchor } -ErrorAction Stop).DistinguishedName
     } catch {
         Write-Output 'Errormessage: AD-Anchor-Group not found'
     }
-    $FullArvatoADPathArry = $FullArvatoADPath.Split( ',' , 2 )
-    $FullArvatoADPathArry[-1]
+    $FullADPathArry = $FullADPath.Split( ',' , 2 )
+    $FullADPathArry[-1]
 }
 
 $AD_Groups = $ShareHost + '_FS_' + $ShareName + '_DL'
-$ADBaseOU = Find-ArvatoTree
+$ADBaseOU = Find-Tree
 
 Foreach ( $AccessTAG in '_LF', '_RW', '_FA') {
     $DLGroup = $AD_Groups + $AccessTAG
