@@ -47,12 +47,19 @@ Function Get-Something {
 
     #Aufruf mehrmals über Pipeline möglich
     PROCESS {
-        $UserName
+        try {
+            $UserName
+        } catch {
+            $errorMessage = $_.Exception.Message
+        }
     }
     
     # einmaliger Aufruf, optional
     END {
         'End'
+        if ($errorMessage) {
+            $errorMessage
+        }
         $Reason
     } 
 }

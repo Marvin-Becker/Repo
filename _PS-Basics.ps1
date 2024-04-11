@@ -12,8 +12,11 @@ $ExecutionContext.InvokeCommand.ExpandString($_body)
 $key = [Console]::ReadKey($true)
 $value = $key.KeyChar
 
-[string]$Domain = (Get-CimInstance win32_computersystem).Domain
+# OS detection
+$domain = (Get-CimInstance win32_computersystem).Domain
 $computersystem = Get-CimInstance win32_computersystem
+$OSName = (Get-CimInstance -ClassName Win32_OperatingSystem).Caption
+$OSversion = [version](Get-WmiObject Win32_OperatingSystem).Version
 
 # Execution Policy
 Get-ExecutionPolicy -List
@@ -84,6 +87,11 @@ Get-Service | Where-Object { $_.Status -eq "Running" }
 "Hallo PowerShell".Substring(0, 5) # -> Erste Zahl = Startzeichen, zweite Zahl = Anzahl Zeichen -> Hallo
 ("OU=USR,OU=group,DC=ASYSSERVICE,DC=de".Split(",")[1]).Substring(3) # = group
 
+# Capitalcase / Anfangsbuchstaben groß
+$firstname = $ENV:USERNAME.Split('.')[0]
+$surname = $ENV:USERNAME.Split('.')[1]
+$name = (Get-Culture).TextInfo.ToTitleCase("$firstname $surname")
+
 # Match
 #  > $NULL entfernt die Ausgabe "True"
 "Match" -match "Ma" # -> True
@@ -130,7 +138,7 @@ $Servers = @{
     "Server01" = "production"
     "Server02" = "tool"
 }
-foreach ($Server in $Servers.Key) {
+foreach ($Server in $Servers.Keys) {
     # $Value = '{0}' -f $Servers[$Server]
     #$Value = $Servers[$Server]
     $Value = $Servers.$Server

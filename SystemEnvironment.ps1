@@ -15,3 +15,21 @@ $Environment = $Environment.Insert($Environment.Length, $AddItem)
 
 #Set Updated Path
 [System.Environment]::SetEnvironmentVariable("Path", $Environment, "Machine")
+
+
+# Simple setting variable
+$variable = 'VariableName'
+$value = 'VariableValue'
+$scope = 'User'
+
+#Get Current Path
+$Environment = [System.Environment]::GetEnvironmentVariable($variable, $scope)
+
+# Set variable 
+if ($Environment -contains $value) {
+    Write-Output 'Wanted value already set'
+} elseif ($Environment) {
+    Write-Output 'There is already a different value'
+} else {
+    [System.Environment]::SetEnvironmentVariable($variable, $value, $scope)
+}

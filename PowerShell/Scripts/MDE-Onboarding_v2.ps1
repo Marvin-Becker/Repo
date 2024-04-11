@@ -85,7 +85,7 @@ function Set-MdeOnboarding() {
     $Disable = (Get-ItemPropertyValue 'HKLM:\Software\Policies\Microsoft\Windows\DataCollection' -Name DisableEnterpriseAuthProxy) -match '1'
     $ProxySet = (Get-ItemPropertyValue 'HKLM:\Software\Policies\Microsoft\Windows\DataCollection' -Name TelemetryProxyServer) -match $Proxy
     $MmaVersion = Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Microsoft Operations Manager\3.0\Setup\' -Name AgentVersion
-
+    Get-Certificate -SubjectName "DESEAU01.medavis.local"
     # Check Certificate
     if (Get-ChildItem -Path Cert:\LocalMachine\Root | Where-Object { $_.Thumbprint -eq $Thumbprint }) {
         $Result += "+ $Certificate is already installed"
