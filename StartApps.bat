@@ -10,6 +10,6 @@ rem start "" "C:\Users\marvin.becker\AppData\Local\Programs\Microsoft VS Code\Co
 start "" "code"
 start "%windir%\System32\mmc.exe" "%windir%\System32\virtmgmt.msc"
 rem start "" "C:\Ditto\DittoPortable.exe"
-start "%systemroot%\system32\mstsc.exe" "C:\Users\marvin.becker\AppData\Roaming\Microsoft\Workspaces\{57ED7E48-7C4C-4B31-8FEB-C1F6B518561C}\Resource\CAS genesisWorld (Work Resources).rdp"
-timeout /t 10 /nobreak
+rem start "%systemroot%\system32\mstsc.exe" "C:\Users\marvin.becker\AppData\Roaming\Microsoft\Workspaces\{57ED7E48-7C4C-4B31-8FEB-C1F6B518561C}\Resource\CAS genesisWorld (Work Resources).rdp"
+timeout /t 10 rem /nobreak
 Exit

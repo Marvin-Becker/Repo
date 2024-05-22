@@ -18,8 +18,8 @@ $Environment = $Environment.Insert($Environment.Length, $AddItem)
 
 
 # Simple setting variable
-$variable = 'VariableName'
-$value = 'VariableValue'
+$variable = 'MongoConnectionString' #'VariableName'
+$value = 'mongodb://becker:aaFS34$@deseau01:27017/?tls=true' #'VariableValue'
 $scope = 'User'
 
 #Get Current Path
@@ -30,6 +30,7 @@ if ($Environment -contains $value) {
     Write-Output 'Wanted value already set'
 } elseif ($Environment) {
     Write-Output 'There is already a different value'
+    $Environment
 } else {
     [System.Environment]::SetEnvironmentVariable($variable, $value, $scope)
 }

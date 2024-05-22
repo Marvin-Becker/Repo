@@ -6,6 +6,10 @@
 # Fehler bei langen Pfaden aushebeln:
 "\\?\$Path\File.txt"
 
+# Zeitstempel
+$timestamp = Get-Date -UFormat "%d.%m.%Y %H:%M:%S"
+$timestamp = (Get-Date).ToString("dd\.MM\.yyyy HH\:mm\:ss")
+
 # Wert einer Variablen einsetzen
 $ExecutionContext.InvokeCommand.ExpandString($_body)
 
