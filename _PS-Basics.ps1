@@ -3,11 +3,19 @@
 # Komplette Historie:
 (Get-PSReadLineOption).HistorySavePath
 
+# Output als Text wenn Zeichen nicht angezeigt werden können (auf Linux läuft)
+$PSStyle.OutputRendering = 'PlainText'
+
+# Debugging
+Enter-PSHostProcess 
+Debug-Process 
+
 # Fehler bei langen Pfaden aushebeln:
 "\\?\$Path\File.txt"
 
 # Zeitstempel
 $timestamp = Get-Date -UFormat "%d.%m.%Y %H:%M:%S"
+$timestamp = Get-Date -UFormat "%Y.%m.%d %H:%M:%S"
 $timestamp = (Get-Date).ToString("dd\.MM\.yyyy HH\:mm\:ss")
 
 # Wert einer Variablen einsetzen
@@ -121,7 +129,7 @@ bcdedit /enum all | Select-String -Pattern $Pattern -Context 2 | ForEach-Object 
 ((netstat -anobv | Select-String -Pattern 8082 -Context 1).Context.PostContext[1]) -replace ' [ \[\]]' # -replace 'alt', 'neu'
 
 $OSName = (Get-CimInstance -ClassName Win32_OperatingSystem).Caption 
-($OSName | Select-String -Pattern 'Windows' -Context 0) -match "[0-9]{4}" > $NULL
+($OSName | Select-String -Pattern 'Windows' -Context 0) -match "[0-9]{2}" > $NULL
 $OSVersion = $Matches.Values
 
 # Objekte suchen
@@ -137,6 +145,15 @@ Get-ChildItem C: | Where-Object { $_.Length -gt 100MB -and $_.IsReadOnly -ne "Tr
 ## doppelte Werte löschen
 $Servers = $Servers | Get-Unique
 
+# Schleife mit immer neuer Variable
+$index = 1
+foreach ($item in $dataList) {
+    $variable = "data$index"
+    # Variable erstellen und den aktuellen Wert zuweisen
+    New-Variable -Name $variable -Value $item
+    $index++
+}
+
 # Hashtables
 $Servers = @{
     "Server01" = "production"
@@ -151,7 +168,7 @@ foreach ($Server in $Servers.Keys) {
 
 # schnelle Alternative zu Arrays (bei vielen neuen Einträgen)
 $Arraylist = New-Object -TypeName "System.Collections.ArrayList"
-$ArrayList.Add($a)
+$ArrayList.Add($a) | Out-Null
 
 # Hashtable vergleichen
 $Service = 'Streamworks'
@@ -373,6 +390,11 @@ $ErrorActionPreference = "Inquire" # Fehlermeldung popt auf und fragt nach Aktio
 ## als Parameter:
 -ErrorAction "SilentlyContinue" -ErrorVariable $Err
 
+$ErrorView = 'NormalView' # Zeigt Fehler in einem detaillierten Format mit einer umfassenden Fehlermeldung, inklusive der vollständigen Ausnahmedetails und Stack-Trace.
+$ErrorView = 'CategoryView' # Zeigt eine vereinfachte Fehlermeldung mit Fokus auf die Fehlerkategorie und -meldung, ohne tiefgehende Details.
+$ErrorView = 'ConciseView' # (Standard ab PowerShell 7): Zeigt eine kompakte Fehlermeldung, die nur den relevanten Teil der Fehlermeldung enthält, um Lesbarkeit zu verbessern.
+$ErrorView = 'DetailedView'
+
 $? # letztes Ergebnis -> True oder False
 if ($? -eq $False) { "Error:" + $Error[0] }
 
@@ -380,16 +402,31 @@ if ($? -eq $False) { "Error:" + $Error[0] }
 try {
     Befehl
 } catch {
-    "Error:" + $Error[0]
+    "Error: " + $Error[0]
 }
 
 # Output
-[string]$Info = ''
-$RC = 0
-[string]$ErrorMessage = ''
-$Result = [PSCustomObject]@{
-    'Info'         = $Info
-    'Returncode'   = $RC
-    'Errormessage' = $ErrorMessage
+$rc = 0
+[string]$info = ''
+[string]$warning = ''
+[string]$errorMessage = ''
+$result = [PSCustomObject]@{
+    'Returncode'   = $rc
+    'Info'         = $info
+    'Warning'      = $warning
+    'Errormessage' = $errorMessage
 }
-return $Result
+return $result
+
+### oder ###
+$result = [PSCustomObject]@{
+    'Returncode'   = '0'
+    'Info'         = ''
+    'Warning'      = ''
+    'Errormessage' = ''
+}
+$result.Returncode = 'x'
+$result.Info = 'x'
+$result.Warning = 'x'
+$result.Errormessage = 'x'
+return $result

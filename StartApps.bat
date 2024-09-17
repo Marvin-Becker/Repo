@@ -1,6 +1,6 @@
 @echo off
 rem start "" "C:\Program Files (x86)\Sophos\Connect\GUI\scgui.exe"
-start "" "C:\Program Files\KeePass Password Safe 2\KeePass.exe"
+start "" "C:\Program Files (x86)\KeePass2x\KeePass.exe"
 start "" "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
 start "" "C:\Program Files (x86)\Microsoft Office\root\Office16\OUTLOOK.EXE"
 rem start "" "C:\Program Files\Microsoft Office\root\Office16\ONENOTE.EXE"

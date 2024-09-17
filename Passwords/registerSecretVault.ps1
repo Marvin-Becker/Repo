@@ -1,4 +1,4 @@
-﻿Register-SecretVault -AllowClobber -Name 'RSServiceUser' -ModuleName 'SecretManagement.Keepass' -VaultParameters @{
-    Path              = "C:\Keepass\RSServiceUser.kdbx"
+﻿Register-SecretVault -AllowClobber -Name 'KeycloakDatabasePasswords' -ModuleName 'SecretManagement.Keepass' -VaultParameters @{
+    Path              = "C:\Keepass\KeycloakDatabasePasswords.kdbx"
     UseMasterPassword = $true
 }
